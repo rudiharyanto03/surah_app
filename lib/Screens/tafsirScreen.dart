@@ -4,8 +4,9 @@ import '../service/api_service.dart';
 
 class TafsirScreen extends StatefulWidget {
   final int nomor;
+  final String namaLatin;
 
-  TafsirScreen({required this.nomor});
+  TafsirScreen({required this.nomor,required this.namaLatin});
 
   @override
   _TafsirScreenState createState() => _TafsirScreenState();
@@ -22,7 +23,6 @@ class _TafsirScreenState extends State<TafsirScreen> {
     _fetchTafsirDetail();
   }
 
-  // Memanggil service untuk mengambil tafsir berdasarkan nomor surat
   Future<void> _fetchTafsirDetail() async {
     try {
       final data = await _suratService.fetchTafsirDetail(widget.nomor);
@@ -38,7 +38,7 @@ class _TafsirScreenState extends State<TafsirScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Tafsir Surat ${widget.nomor}'), backgroundColor: Colors.green,),
+      appBar: AppBar(title: Text('Tafsir Surat ${widget.namaLatin}'), backgroundColor: Colors.green,),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : ListView.builder(

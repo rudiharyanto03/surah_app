@@ -6,15 +6,16 @@ import '../service/api_service.dart';
 
 class SuratDetailScreen extends StatefulWidget {
   final int nomor;
+  final String namaLatin;
 
-  SuratDetailScreen({required this.nomor});
+  SuratDetailScreen({required this.nomor, required this.namaLatin});
 
   @override
   _SuratDetailScreenState createState() => _SuratDetailScreenState();
 }
 
 class _SuratDetailScreenState extends State<SuratDetailScreen> {
-  SuratModel? suratDetail; // Ubah menjadi nullable SuratModel
+  SuratModel? suratDetail; 
   bool isLoading = true;
   final SuratService _suratService = SuratService();
 
@@ -24,13 +25,13 @@ class _SuratDetailScreenState extends State<SuratDetailScreen> {
     _fetchSuratDetail();
   }
 
-  // Memanggil service untuk mengambil detail surat
+
   Future<void> _fetchSuratDetail() async {
     try {
       final data = await _suratService.fetchSuratDetail(widget.nomor);
       setState(() {
-        suratDetail = data; // Menyimpan data ke suratDetail
-        isLoading = false;   // Menandakan loading selesai
+        suratDetail = data; 
+        isLoading = false; 
       });
     } catch (e) {
       setState(() {
@@ -40,19 +41,20 @@ class _SuratDetailScreenState extends State<SuratDetailScreen> {
     }
   }
 
-  // Fungsi untuk membuka halaman tafsir
   void _navigateToTafsir() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TafsirScreen(nomor: widget.nomor),
+        builder: (context) => TafsirScreen(
+          nomor: widget.nomor,
+          namaLatin: widget.namaLatin,
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Periksa apakah suratDetail sudah terisi atau masih null
     if (isLoading) {
       return Scaffold(
         appBar: AppBar(title: Text("Loading...")),
@@ -60,7 +62,6 @@ class _SuratDetailScreenState extends State<SuratDetailScreen> {
       );
     }
 
-    // Jika suratDetail null, tampilkan pesan error atau placeholder
     if (suratDetail == null) {
       return Scaffold(
         appBar: AppBar(title: Text("Error")),
@@ -68,9 +69,11 @@ class _SuratDetailScreenState extends State<SuratDetailScreen> {
       );
     }
 
-    // Jika data sudah berhasil diambil, tampilkan detail surat
     return Scaffold(
-      appBar: AppBar(title: Text(suratDetail!.namaLatin), backgroundColor: Colors.green,),
+      appBar: AppBar(
+        title: Text(suratDetail!.namaLatin),
+        backgroundColor: Colors.green,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

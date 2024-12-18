@@ -17,7 +17,6 @@ class SuratModel {
     required this.deskripsi,
   });
 
-  // Factory method untuk membuat objek SuratModel dari JSON
   factory SuratModel.fromJson(Map<String, dynamic> json) {
     return SuratModel(
       nomor: json['nomor'],
